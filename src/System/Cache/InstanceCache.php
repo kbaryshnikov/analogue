@@ -45,7 +45,7 @@ class InstanceCache
             throw new CacheException("Tried to cache an instance which is already cached. Id : $id");
         }
 
-        $this->instances[$id] = $entity;
+        $this->instances[(string)$id] = $entity;
     }
 
     /**
@@ -57,7 +57,7 @@ class InstanceCache
      */
     public function has($id) : bool
     {
-        return array_key_exists($id, $this->instances);
+        return array_key_exists((string)$id, $this->instances);
     }
 
     /**
@@ -77,7 +77,7 @@ class InstanceCache
             return;
         }
 
-        return $this->instances[$id];
+        return $this->instances[(string)$id];
     }
 
     /**

@@ -117,7 +117,7 @@ class AttributeCache
     public function get($id)
     {
         if ($this->has($id)) {
-            return $this->cache[$id];
+            return $this->cache[(string)$id];
         } else {
             return [];
         }
@@ -132,7 +132,7 @@ class AttributeCache
      */
     public function has($id)
     {
-        return array_key_exists($id, $this->cache);
+        return array_key_exists((string)$id, $this->cache);
     }
 
     /**
@@ -146,7 +146,7 @@ class AttributeCache
     protected function mergeCacheResults(array $results)
     {
         foreach ($results as $key => $entity) {
-            $this->cache[$key] = $entity;
+            $this->cache[(string)$key] = $entity;
         }
     }
 
@@ -229,14 +229,14 @@ class AttributeCache
      */
     protected function cacheManyRelationResults($parentKey, $relation, $results, Relationship $relationship)
     {
-        $this->cache[$parentKey][$relation] = [];
+        $this->cache[(string)$parentKey][$relation] = [];
 
         foreach ($results as $result) {
             $cachedRelationship = $this->getCachedRelationship($parentKey, $relation, $result, $relationship);
 
             $relatedHash = $cachedRelationship->getHash();
 
-            $this->cache[$parentKey][$relation][$relatedHash] = $cachedRelationship;
+            $this->cache[(string)$parentKey][$relation][$relatedHash] = $cachedRelationship;
         }
     }
 
@@ -252,7 +252,7 @@ class AttributeCache
      */
     protected function cacheSingleRelationResult($parentKey, $relation, $result, Relationship $relationship)
     {
-        $this->cache[$parentKey][$relation] = $this->getCachedRelationship($parentKey, $relation, $result, $relationship);
+        $this->cache[(string)$parentKey][$relation] = $this->getCachedRelationship($parentKey, $relation, $result, $relationship);
     }
 
     /**
@@ -282,7 +282,7 @@ class AttributeCache
      */
     public function refresh(Aggregate $entity)
     {
-        $this->cache[$entity->getEntityId()] = $this->transform($entity);
+        $this->cache[(string)$entity->getEntityId()] = $this->transform($entity);
     }
 
     /**
